@@ -10,9 +10,16 @@
 /// @author Waylon Bader <wbader@hawaii.edu>
 /// @date   17_Apr_2022
 ///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
 
+#include "config.h"
 #include "Weight.h"
 
 int main(){
-    Weight weight;
+    std::cout << PROGRAM_NAME << " starting" << std::endl;
+    Weight weight(Weight::POUND, 0, 0);
+
+
+
+    std::cout << PROGRAM_NAME << " ending" << std::endl;
 }
