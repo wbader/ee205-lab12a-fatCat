@@ -8,13 +8,20 @@
 /// @author Waylon Bader <wbader@hawaii.edu>
 /// @date   14_Apr_2022
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef EE205_LAB12A_FATCAT_WEIGHT_H
-#define EE205_LAB12A_FATCAT_WEIGHT_H
+#pragma once
 
 
 class Weight {
-
+public:
+    enum UnitOfWeight {
+        POUND,
+        KILO,
+        SLUG
+    };
+private:
+    bool bIsKnown;
+    bool bHasMax;
+    float weight;
+    float maxWeight;
+    enum UnitOfWeight unitOfWeight;
 };
-
-
-#endif //EE205_LAB12A_FATCAT_WEIGHT_H
