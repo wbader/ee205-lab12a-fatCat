@@ -3,4 +3,4 @@ project(fatCat)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(fatCat main.cpp Weight.cpp Weight.h)
+add_executable(fatCat main.cpp Weight.h Weight.cpp)
