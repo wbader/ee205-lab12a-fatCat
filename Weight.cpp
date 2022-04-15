@@ -23,15 +23,40 @@ Weight::Weight() noexcept {
 
 Weight::Weight(Weight::t_weight newWeight) {
     Weight();
-    setWeight(newWeight);
+    try {
+        setWeight(newWeight);
+    } catch (std::exception const& e) {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+Weight::Weight(Weight::UnitOfWeight newUnitOfWeight) noexcept {
+    Weight();
+    unitOfWeight = newUnitOfWeight;
+}
+
+Weight::Weight(t_weight newWeight, UnitOfWeight newUnitOfWeight)
+{
+    Weight();
+
+    unitOfWeight = newUnitOfWeight;
+    try {
+        setWeight(newWeight);
+    } catch (std::exception const& e) {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight newMaxWeight) {
     Weight();
 
     unitOfWeight = newUnitOfWeight;
-    setMaxWeight(newMaxWeight);
-    setWeight(newWeight);
+    try {
+        setMaxWeight(newMaxWeight);
+        setWeight(newWeight);
+    } catch (std::exception const& e) {
+        std::cerr << e.what() << std::endl;
+    }
 
 }
 
@@ -55,19 +80,17 @@ void Weight::setWeight(Weight::t_weight newWeight) {
         weight = newWeight;
         bIsKnown = true;
     } else
-        std::cerr << PROGRAM_NAME << " Weight::setWeight(t_weight): newWeight must be > 0 and <= maxWeight" << std::endl;
+        throw std::invalid_argument( PROGRAM_NAME  " Weight::setWeight(t_weight): newWeight must be > 0 and <= maxWeight" );
 }
 
 
 void Weight::setWeight(Weight::t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight) {
-    if((newWeight > 0.0 && !bHasMax) || (newWeight > 0.0 && newWeight <= maxWeight) ) {
+    if ((newWeight > 0.0 && !bHasMax) || (newWeight > 0.0 && newWeight <= maxWeight)) {
         weight = newWeight;
         unitOfWeight = newUnitOfWeight;
         bIsKnown = true;
-    } else {
-        std::cerr << PROGRAM_NAME << " Weight::setWeight(t_weight, UnitOfWeight): newWeight must be > 0 and <= maxWeight" << std::endl;
-        return;
-    }
+    } else
+        throw std::invalid_argument( PROGRAM_NAME " Weight::setWeight(t_weight, UnitOfWeight): newWeight must be > 0 and <= maxWeight");
 }
 
 Weight::t_weight Weight::getMaxWeight() const {

@@ -34,6 +34,10 @@ private:
 public:
     Weight() noexcept;
     Weight(Weight::t_weight newWeight);
+    Weight(UnitOfWeight newUnitOfWeight) noexcept;
+
+    Weight(t_weight newWeight, UnitOfWeight newUnitOfWeight);
+
     Weight(Weight::UnitOfWeight newUnitOfWeight, t_weight newWeight, t_weight newMaxWeight);
 
     virtual ~Weight();
@@ -46,6 +50,9 @@ public:
     void setWeight(t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight);
 
 };
+
+
+
 
 
 
