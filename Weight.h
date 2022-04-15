@@ -21,10 +21,10 @@ public:  // enum and typedef
     typedef float t_weight;
 
 private:
-    bool bIsKnown;
-    bool bHasMax;
-    t_weight weight;
-    t_weight maxWeight;
+    bool              bIsKnown;
+    bool              bHasMax;
+    t_weight          weight;
+    t_weight          maxWeight;
     enum UnitOfWeight unitOfWeight;
 
     constexpr static const t_weight UNKNOWN_WEIGHT = -1.0;
@@ -32,7 +32,8 @@ private:
     constexpr static const t_weight SLUGS_IN_A_POUND = (1.0 / 32.174);
 
 public:
-    Weight();
+    Weight() noexcept;
+    Weight(Weight::t_weight newWeight);
     Weight(Weight::UnitOfWeight newUnitOfWeight, t_weight newWeight, t_weight newMaxWeight);
 
     virtual ~Weight();

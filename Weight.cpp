@@ -13,12 +13,17 @@
 
 #include <iostream>
 
-Weight::Weight() {
+Weight::Weight() noexcept {
     bIsKnown     = false;
     bHasMax      = false;
     unitOfWeight = POUND;
     weight       = 0.0;
     maxWeight    = 0.0;
+}
+
+Weight::Weight(Weight::t_weight newWeight) {
+    Weight();
+    setWeight(newWeight);
 }
 
 Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight newMaxWeight) {
