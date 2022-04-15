@@ -26,6 +26,11 @@ private:
     t_weight weight;
     t_weight maxWeight;
     enum UnitOfWeight unitOfWeight;
+
+    constexpr static const t_weight UNKNOWN_WEIGHT = -1.0;
+    constexpr static const t_weight KILOS_IN_A_POUND = (1.0 / 2.205);
+    constexpr static const t_weight SLUGS_IN_A_POUND = (1.0 / 32.174);
+
 public:
     Weight();
     Weight(Weight::UnitOfWeight newUnitOfWeight, t_weight newWeight, t_weight newMaxWeight);

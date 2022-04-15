@@ -21,18 +21,21 @@ Weight::Weight() {
     maxWeight    = 0.0;
 }
 
-Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight    newMaxWeight)
-{
+Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight newMaxWeight) {
     Weight();
 
     unitOfWeight = newUnitOfWeight;
-    setWeight(newWeight);
     setMaxWeight(newMaxWeight);
+    setWeight(newWeight);
 
 }
 
 Weight::~Weight() {
-
+    bIsKnown     = false;
+    bHasMax      = false;
+    unitOfWeight = POUND;
+    weight       = 0.0;
+    maxWeight    = 0.0;
 }
 
 Weight::t_weight Weight::getWeight() const {
@@ -43,15 +46,22 @@ Weight::t_weight Weight::getWeight() const {
 }
 
 void Weight::setWeight(Weight::t_weight newWeight) {
-    Weight::weight = newWeight;
+    if((newWeight > 0.0 && !bHasMax) || (newWeight > 0.0 && newWeight <= maxWeight) ) {
+        weight = newWeight;
+        bIsKnown = true;
+    } else
+        std::cerr << PROGRAM_NAME << " Weight::setWeight(t_weight): newWeight must be > 0 and <= maxWeight" << std::endl;
 }
 
 
-void Weight::setWeight(Weight::t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight)
-{
-    if(bHasMax)
-    {
-        std::cerr << PROGRAM_NAME << " setWeight(float, UnitOfWeight): bHasMax is true" << std::endl;
+void Weight::setWeight(Weight::t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight) {
+    if((newWeight > 0.0 && !bHasMax) || (newWeight > 0.0 && newWeight <= maxWeight) ) {
+        weight = newWeight;
+        unitOfWeight = newUnitOfWeight;
+        bIsKnown = true;
+    } else {
+        std::cerr << PROGRAM_NAME << " Weight::setWeight(t_weight, UnitOfWeight): newWeight must be > 0 and <= maxWeight" << std::endl;
+        return;
     }
 }
 
