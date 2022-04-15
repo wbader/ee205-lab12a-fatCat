@@ -11,3 +11,5 @@
 #pragma once
 
 #define PROGRAM_NAME "Fat Cat"
+#define UNKNOWN_WEIGHT (-1.0)
+
