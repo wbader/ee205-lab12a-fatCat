@@ -11,34 +11,39 @@
 #pragma once
 
 class Weight {
-public:
+public:  // enum and typedef
     enum UnitOfWeight {
-        POUND,
+        POUND = 0,
         KILO,
         SLUG
     };
 
+    typedef float t_weight;
+
 private:
     bool bIsKnown;
     bool bHasMax;
-    float weight;
-    float maxWeight;
+    t_weight weight;
+    t_weight maxWeight;
+    enum UnitOfWeight unitOfWeight;
 public:
-    float getMaxWeight() const;
+    Weight();
+    Weight(Weight::UnitOfWeight newUnitOfWeight, t_weight newWeight, t_weight newMaxWeight);
 
+    virtual ~Weight();
+
+    t_weight getMaxWeight() const;
     void setMaxWeight(float newMaxWeight);
 
-private:
-    enum UnitOfWeight unitOfWeight;
-
-public:
-
-    Weight(Weight::UnitOfWeight newUnitOfWeight, float newWeight, float newMaxWeight);
-    float getWeight() const;
-    void setWeight(float newWeight);
-    void setWeight(float newWeight, Weight::UnitOfWeight newUnitOfWeight);
+    t_weight getWeight() const;
+    void setWeight(t_weight newWeight);
+    void setWeight(t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight);
 
 };
+
+
+
+
 
 
 

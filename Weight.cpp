@@ -13,24 +13,41 @@
 
 #include <iostream>
 
-Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, float newWeight, float newMaxWeight)
+Weight::Weight() {
+    bIsKnown     = false;
+    bHasMax      = false;
+    unitOfWeight = POUND;
+    weight       = 0.0;
+    maxWeight    = 0.0;
+}
+
+Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight    newMaxWeight)
 {
+    Weight();
+
+    unitOfWeight = newUnitOfWeight;
+    setWeight(newWeight);
+    setMaxWeight(newMaxWeight);
 
 }
 
-float Weight::getWeight() const {
+Weight::~Weight() {
+
+}
+
+Weight::t_weight Weight::getWeight() const {
     if(bIsKnown)
         return weight;
     else
-        return -1; // @todo figure out what to return if weight is unknown
+        return UNKNOWN_WEIGHT;
 }
 
-void Weight::setWeight(float newWeight) {
+void Weight::setWeight(Weight::t_weight newWeight) {
     Weight::weight = newWeight;
 }
 
 
-void Weight::setWeight(float newWeight, Weight::UnitOfWeight newUnitOfWeight)
+void Weight::setWeight(Weight::t_weight newWeight, Weight::UnitOfWeight newUnitOfWeight)
 {
     if(bHasMax)
     {
@@ -38,10 +55,10 @@ void Weight::setWeight(float newWeight, Weight::UnitOfWeight newUnitOfWeight)
     }
 }
 
-float Weight::getMaxWeight() const {
+Weight::t_weight Weight::getMaxWeight() const {
     return maxWeight;
 }
 
-void Weight::setMaxWeight(float newMaxWeight) {
+void Weight::setMaxWeight(Weight::t_weight newMaxWeight) {
     Weight::maxWeight = newMaxWeight;
 }
