@@ -34,6 +34,8 @@ private:
     static const t_weight KILOS_IN_A_POUND;
     static const t_weight SLUGS_IN_A_POUND;
 
+    void setMaxWeight(float newMaxWeight);
+
 public:
     static const std::string POUND_LABEL ;
     static const std::string KILO_LABEL ;
@@ -77,8 +79,6 @@ public:
     static Weight::t_weight fromPoundToSlug(Weight::t_weight pound) noexcept;
 
     static Weight::t_weight convertWeight(Weight::t_weight fromWeight, Weight::UnitOfWeight fromUnit, Weight::UnitOfWeight toUnit) noexcept;
-
-    void setMaxWeight(float newMaxWeight);
 
     friend std::ostream &operator<<(std::ostream &os, const Weight &weight);
     friend std::ostream &operator<<(std::ostream &os, Weight::UnitOfWeight rhs_UnitOfWeight);
