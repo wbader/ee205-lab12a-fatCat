@@ -19,9 +19,9 @@ const Weight::t_weight Weight::UNKNOWN_WEIGHT   = (0.0);
 const Weight::t_weight Weight::KILOS_IN_A_POUND = (1.0 / 2.205);
 const Weight::t_weight Weight::SLUGS_IN_A_POUND = (1.0 / 32.174);
 
-const std::string Weight::POUND_LABEL = "pound";
-const std::string Weight::KILO_LABEL  = "kilogram";
-const std::string Weight::SLUG_LABEL  = "slug";
+const std::string Weight::POUND_LABEL = "Pound";
+const std::string Weight::KILO_LABEL  = "Kilogram";
+const std::string Weight::SLUG_LABEL  = "Slug";
 
 Weight::Weight() noexcept {
     bIsKnown     = false;
@@ -127,9 +127,9 @@ void Weight::setWeight(Weight::t_weight newWeight) {
 
 
 void Weight::setWeight(Weight::t_weight newWeight, Weight::UnitOfWeight weightUnits) {
-    if ((newWeight > 0.0 && !bHasMax) || (newWeight > 0.0 && newWeight <= maxWeight)) {
-        weight = newWeight;
-        unitOfWeight = weightUnits;
+    t_weight convertedWeight = convertWeight(newWeight, weightUnits, unitOfWeight);
+    if ((convertedWeight > 0.0 && !bHasMax) || (convertedWeight > 0.0 && convertedWeight <= maxWeight)) {
+        weight = convertedWeight;
         bIsKnown = true;
     } else
         throw std::invalid_argument( PROGRAM_NAME " Weight::setWeight(t_weight, UnitOfWeight): newWeight must be > 0 and <= maxWeight");
@@ -259,7 +259,7 @@ Weight::t_weight Weight::fromPoundToSlug(Weight::t_weight pound) noexcept {
 
 std::ostream &operator<<(std::ostream &os, const Weight &weight) {
     os << weight.weight << " " << weight.unitOfWeight;
-    if(weight.weight == 1.0)
+    if(weight.weight != 1.0)
         os << "S";
     return os;
 }
