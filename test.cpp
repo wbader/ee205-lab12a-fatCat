@@ -21,7 +21,13 @@ int main()
 {
     cout << PROGRAM_NAME << " Starting" << endl;
 
-    Weight:Weight* weight = new Weight(Weight::POUND, 10.0, 40.0);
+    Weight *weight;
+
+    try {
+        weight = new Weight(Weight::POUND, 10.0, 40.0);
+    } catch (std::exception const& e) {
+        cout << e.what() << endl;
+    }
 
 
 

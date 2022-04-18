@@ -144,3 +144,7 @@ bool Weight::hasMaxWeight() const noexcept{
     return bHasMax;
 }
 
+Weight::UnitOfWeight Weight::getWeightUnit() const noexcept{
+    return unitOfWeight;
+}
+

@@ -39,8 +39,8 @@ private:
 
 public:
     Weight() noexcept;
-    Weight(Weight::t_weight newWeight);
-    Weight(UnitOfWeight newUnitOfWeight) noexcept;
+    explicit Weight(Weight::t_weight newWeight);
+    explicit Weight(UnitOfWeight newUnitOfWeight) noexcept;
     Weight(t_weight newWeight, UnitOfWeight newUnitOfWeight);
     Weight(t_weight newWeight, t_weight newMaxWeight);
     Weight(Weight::UnitOfWeight newUnitOfWeight, t_weight newMaxWeight);
