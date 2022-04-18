@@ -11,6 +11,7 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 
 class Weight {
 public:  // enum and typedef
@@ -33,11 +34,11 @@ private:
     static const t_weight KILOS_IN_A_POUND;
     static const t_weight SLUGS_IN_A_POUND;
 
+public:
     static const std::string POUND_LABEL ;
     static const std::string KILO_LABEL ;
     static const std::string SLUG_LABEL ;
 
-public:
     Weight() noexcept;
     explicit Weight(Weight::t_weight newWeight);
     explicit Weight(UnitOfWeight newUnitOfWeight) noexcept;
@@ -67,7 +68,7 @@ public:
     bool operator==(const Weight &rhs_Weight) const;
     bool operator<(const Weight &rhs_Weight) const;
 
-    Weight & operator+=(float rhs_addToWeight);
+    Weight & operator+=(Weight::t_weight rhs_addToWeight);
 
     static Weight::t_weight fromKilogramToPound(Weight::t_weight kilogram) noexcept;
     static Weight::t_weight fromPoundToKilogram(Weight::t_weight pound) noexcept;
@@ -78,14 +79,8 @@ public:
     static Weight::t_weight convertWeight(Weight::t_weight fromWeight, Weight::UnitOfWeight fromUnit, Weight::UnitOfWeight toUnit) noexcept;
 
     void setMaxWeight(float newMaxWeight);
+
+    friend std::ostream &operator<<(std::ostream &os, const Weight &weight);
+    friend std::ostream &operator<<(std::ostream &os, Weight::UnitOfWeight rhs_UnitOfWeight);
 };
-
-
-
-
-
-
-
-
-
 

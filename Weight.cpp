@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <string>
+#include <cassert>
 
 const Weight::t_weight Weight::UNKNOWN_WEIGHT   = (0.0);
 const Weight::t_weight Weight::KILOS_IN_A_POUND = (1.0 / 2.205);
@@ -37,6 +38,8 @@ Weight::Weight(Weight::t_weight newWeight) {
     } catch (std::exception const& e) {
         throw std::invalid_argument(e.what());
     }
+
+    assert(validate());
 }
 
 Weight::Weight(Weight::UnitOfWeight newUnitOfWeight) noexcept {
@@ -54,6 +57,8 @@ Weight::Weight(t_weight newWeight, UnitOfWeight newUnitOfWeight)
     } catch (std::exception const& e) {
         throw std::invalid_argument (e.what());
     }
+
+    assert(validate());
 }
 
 Weight::Weight(Weight::t_weight newWeight, Weight::t_weight newMaxWeight){
@@ -65,6 +70,8 @@ Weight::Weight(Weight::t_weight newWeight, Weight::t_weight newMaxWeight){
     } catch (std::exception const& e) {
         throw std::invalid_argument (e.what());
     }
+
+    assert(validate());
 }
 
 Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newMaxWeight){
@@ -77,6 +84,8 @@ Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newMaxWeig
     }
 
     unitOfWeight = newUnitOfWeight;
+
+    assert(validate());
 }
 
 Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight, Weight::t_weight newMaxWeight) {
@@ -87,9 +96,10 @@ Weight::Weight(Weight::UnitOfWeight newUnitOfWeight, Weight::t_weight newWeight,
         setMaxWeight(newMaxWeight);
         setWeight(newWeight);
     } catch (std::exception const& e) {
-        throw std::invalid_argument (e.what());
+        throw std::invalid_argument(e.what());
     }
 
+    assert(validate());
 }
 
 Weight::~Weight() {
@@ -172,6 +182,25 @@ bool Weight::operator==(const Weight &rhs_Weight) const {
     return lhs_weight == rhs_weight;
 }
 
+bool Weight::operator<(const Weight &rhs_Weight) const {
+    t_weight lhs_weight = (bIsKnown) ? getWeight(UnitOfWeight::POUND) : 0.0;
+    t_weight rhs_weight = (rhs_Weight.isWeightKnown()) ? rhs_Weight.getWeight(UnitOfWeight::POUND) : 0.0;
+
+    return lhs_weight < rhs_weight;
+}
+
+Weight& Weight::operator+=(Weight::t_weight rhs_addToWeight) {
+    t_weight newWeight = getWeight() +rhs_addToWeight;
+    if(isWeightValid(newWeight))
+        setWeight(newWeight);
+    else
+        throw std::invalid_argument( PROGRAM_NAME " Weight::operator+= exceeded maxWeight" );
+
+    assert(validate());
+
+    return *this;
+}
+
 Weight::t_weight Weight::convertWeight(Weight::t_weight fromWeight, Weight::UnitOfWeight fromUnit, Weight::UnitOfWeight toUnit) noexcept
 {
     switch (toUnit) {
@@ -206,7 +235,10 @@ Weight::t_weight Weight::convertWeight(Weight::t_weight fromWeight, Weight::Unit
 }
 
 Weight::t_weight Weight::getWeight(Weight::UnitOfWeight weightUnits) const noexcept {
-    return convertWeight(weight, unitOfWeight, weightUnits);
+    if(bIsKnown)
+        return convertWeight(weight, unitOfWeight, weightUnits);
+    else
+        return UNKNOWN_WEIGHT;
 }
 
 Weight::t_weight Weight::fromKilogramToPound(Weight::t_weight kilogram) noexcept {
@@ -223,4 +255,24 @@ Weight::t_weight Weight::fromSlugToPound(Weight::t_weight slug) noexcept {
 
 Weight::t_weight Weight::fromPoundToSlug(Weight::t_weight pound) noexcept {
     return pound * SLUGS_IN_A_POUND;
+}
+
+std::ostream &operator<<(std::ostream &os, const Weight &weight) {
+    os << weight.weight << " " << weight.unitOfWeight;
+    if(weight.weight == 1.0)
+        os << "S";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, Weight::UnitOfWeight rhs_UnitOfWeight) {
+    switch ( rhs_UnitOfWeight ) {
+        case Weight::UnitOfWeight::POUND:
+            return os << Weight::POUND_LABEL;
+        case Weight::UnitOfWeight::KILO:
+            return os << Weight::KILO_LABEL;
+        case Weight::UnitOfWeight::SLUG:
+            return os << Weight::SLUG_LABEL;
+        default:
+            throw std::out_of_range("The unit can't be mapped to a string");
+    }
 }
