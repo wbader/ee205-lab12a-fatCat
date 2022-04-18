@@ -59,7 +59,7 @@ public:
     void setWeight(t_weight newWeight);
     void setWeight(t_weight newWeight, Weight::UnitOfWeight weightUnits);
 
-    bool isWeightValid(float checkWeight) const noexcept;
+    bool isWeightValid(t_weight checkWeight) const noexcept;
     bool validate() const noexcept;
 
     void dump() const noexcept;

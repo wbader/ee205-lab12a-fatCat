@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-const Weight::t_weight Weight::UNKNOWN_WEIGHT   = (-1.0);
+const Weight::t_weight Weight::UNKNOWN_WEIGHT   = (0.0);
 const Weight::t_weight Weight::KILOS_IN_A_POUND = (1.0 / 2.205);
 const Weight::t_weight Weight::SLUGS_IN_A_POUND = (1.0 / 32.174);
 
@@ -148,3 +148,79 @@ Weight::UnitOfWeight Weight::getWeightUnit() const noexcept{
     return unitOfWeight;
 }
 
+bool Weight::isWeightValid(Weight::t_weight checkWeight) const noexcept {
+    if ((checkWeight > 0.0 && !bHasMax) || (checkWeight > 0.0 && checkWeight <= maxWeight))
+        return true;
+    else
+        return false;
+}
+
+bool Weight::validate() const noexcept {
+    if(isWeightKnown()) {
+        if ((weight > 0.0 && !bHasMax) || (weight > 0.0 && weight <= maxWeight))
+            return true;
+        else
+            return false;
+    } else
+        return false;
+}
+
+bool Weight::operator==(const Weight &rhs_Weight) const {
+    t_weight lhs_weight = (bIsKnown) ? getWeight(UnitOfWeight::POUND) : 0.0;
+    t_weight rhs_weight = (rhs_Weight.isWeightKnown()) ? rhs_Weight.getWeight(UnitOfWeight::POUND) : 0.0;
+
+    return lhs_weight == rhs_weight;
+}
+
+Weight::t_weight Weight::convertWeight(Weight::t_weight fromWeight, Weight::UnitOfWeight fromUnit, Weight::UnitOfWeight toUnit) noexcept
+{
+    switch (toUnit) {
+        case UnitOfWeight::POUND:
+            if (fromUnit == UnitOfWeight::KILO)
+                return fromKilogramToPound(fromWeight);
+            else if (fromUnit == UnitOfWeight::SLUG)
+                return fromSlugToPound(fromWeight);
+            else
+                return fromWeight;
+            break;
+        case UnitOfWeight::KILO:
+            if(fromUnit == UnitOfWeight::POUND)
+                return fromPoundToKilogram(fromWeight);
+             else if (fromUnit == UnitOfWeight::SLUG)
+                return fromPoundToKilogram(fromSlugToPound(fromWeight));
+             else
+                return fromWeight;
+            break;
+        case UnitOfWeight::SLUG:
+            if(fromUnit == UnitOfWeight::POUND)
+                return fromPoundToSlug(fromWeight);
+            else if (fromUnit == UnitOfWeight::KILO)
+                return fromPoundToSlug(fromKilogramToPound(fromWeight));
+            else
+                return fromWeight;
+            break;
+        default:
+            std::cerr << "convertWeight() went to default! this should never happen, but if it does I can't throw an exception" <<std::endl;
+            return UNKNOWN_WEIGHT;
+    }
+}
+
+Weight::t_weight Weight::getWeight(Weight::UnitOfWeight weightUnits) const noexcept {
+    return convertWeight(weight, unitOfWeight, weightUnits);
+}
+
+Weight::t_weight Weight::fromKilogramToPound(Weight::t_weight kilogram) noexcept {
+    return kilogram / KILOS_IN_A_POUND;
+}
+
+Weight::t_weight Weight::fromPoundToKilogram(Weight::t_weight pound) noexcept {
+    return pound * KILOS_IN_A_POUND;
+}
+
+Weight::t_weight Weight::fromSlugToPound(Weight::t_weight slug) noexcept {
+    return slug / SLUGS_IN_A_POUND;
+}
+
+Weight::t_weight Weight::fromPoundToSlug(Weight::t_weight pound) noexcept {
+    return pound * SLUGS_IN_A_POUND;
+}
